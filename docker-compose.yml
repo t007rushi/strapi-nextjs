@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-build
+    working_dir: /app/backend
+    ports:
+      - "1337:1337"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_CLIENT=sqlite
+      - DATABASE_FILENAME=/app/backend/data/data.sqlite
+    volumes:
+      - ./backend/data:/app/backend/data
+    command: ["npm", "start"]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend-build
+    working_dir: /app/frontend
+    ports:
+      - "3000:3000" 
+    environment:
+      - NODE_ENV=production
+    command: ["npm", "start"]
+
+
+networks:
+  hodor:
+    external: true
+      # name: hodor
